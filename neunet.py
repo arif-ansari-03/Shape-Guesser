@@ -8,10 +8,10 @@ class Layer:
         self.weights = Weights
         self.biases = Biases
 
-    def calc_out( inLayer ):
-        outLayer = numpy.matmul(Layer.Weights, inLayer)
-        for i in range(Layer.numNodes):
-            outLayer[i] += Layer.Biases[i]
+    def calc_out( self, inLayer ):
+        outLayer = numpy.matmul(self.weights, inLayer)
+        for i in range(self.numNodes):
+            outLayer[i] += self.biases[i]
             outLayer[i] = 1/(1 + numpy.exp(-outLayer[i]))
 
         return outLayer
@@ -22,10 +22,10 @@ class Network:
         self.numLayers = NumLayers
         self.layers = Layers
 
-    def calc_out( inArray ):
-        outArray = list(inArray)
-        for i in range(Network.numLayers):
-            outArray = Network.layers[i].calc_out( outArray )
+    def calc_out( self , inArray ):
+        outArray = [x for x in inArray]
+        for i in range(self.numLayers):
+            outArray = self.layers[i].calc_out( outArray )
 
         return outArray             # The final output of the neural network
     
