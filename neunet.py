@@ -19,8 +19,16 @@ class Layer:
 class Network:
 
     def __init__(self, NumLayers, Layers):
-        self.numLayers = NumLayers
-        self.layers = Layers
+        self.numLayers = NumLayers #does not include input layer
+        self.layers = Layers #does not include input layer
+
+    def lastLayer(self)
+        return self.Layers[self.numLayers-1]
+    
+    def calcLayers(self, inArray):
+        self.calc_layers = {}
+
+        for ()
 
     def calc_out( self , inArray ):
         outArray = [x for x in inArray]

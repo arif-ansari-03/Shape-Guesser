@@ -1,12 +1,16 @@
 import neunet
 
-biases = [[0.0, 1.0], [0.0, 0.0], [0.0, 0.0]]
-weights = [[[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]], [[0.0, 0.0], [0.0, 0.0]]]
+class Trainer:
+    def __init__(self, network):
+        self.network = network
 
-Layers = [neunet.Layer(2, 2, weights[i], biases[i]) for i in range(3)]
-myNet = neunet.Network(3, Layers)
+    def cost_grad(self, expected_output): # gradient for the last layer
+        node_values = [cost(expected_output[x], self.lastLayer[x]) for x in range(self.lastLayer.)]            
 
-inLayer = [0.0, 0.0]
-outLayer = myNet.calc_out(inLayer)
-print(inLayer)
-print(outLayer)
+    def calc_grad(expected_output):
+        
+
+    def upd_grad(gradient):
+
+    
+        
