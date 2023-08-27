@@ -16,19 +16,31 @@ class Layer:
 
         return outLayer
     
+    def calcZ( self, inLayer ):
+        outLayer = numpy.matmul(self.weights, inLayer)
+        for i in range(self.numNodes):
+            outLayer[i] += self.biases[i]
+
+        return outLayer
+    
 class Network:
 
     def __init__(self, NumLayers, Layers):
         self.numLayers = NumLayers #does not include input layer
         self.layers = Layers #does not include input layer
 
-    def lastLayer(self)
+    def lastLayer(self):
         return self.Layers[self.numLayers-1]
     
     def calcLayers(self, inArray):
-        self.calc_layers = {}
+        calc_layers = []
+        outArray = inArray.copy()
 
-        for ()
+        for i in range(self.numLayers):
+            outArray = self.layers[i].calcZ(outArray)
+            calc_layers.append(outArray.copy())
+
+        return calc_layers
 
     def calc_out( self , inArray ):
         outArray = [x for x in inArray]
