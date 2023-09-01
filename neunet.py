@@ -8,6 +8,12 @@ class Layer:
         self.weights = Weights
         self.biases = Biases
 
+    def __init__(self, arr):
+        self.numNodes = arr[0]               
+        self.numInNodes = arr[1]           
+        self.weights = arr[2] 
+        self.biases = arr[3] 
+
     def calc_out( self, inLayer ):
         outLayer = numpy.matmul(self.weights, inLayer)
         for i in range(self.numNodes):
@@ -17,6 +23,7 @@ class Layer:
         return outLayer
     
     def calcZ( self, inLayer ):
+
         outLayer = numpy.matmul(self.weights, inLayer)
         for i in range(self.numNodes):
             outLayer[i] += self.biases[i]
@@ -29,6 +36,9 @@ class Network:
         self.numLayers = NumLayers #does not include input layer
         self.layers = Layers #does not include input layer
 
+    def activationFunction(self, z):
+        return 1 / (1 + numpy.exp(-z))
+
     def lastLayer(self):
         return self.Layers[self.numLayers-1]
     
@@ -39,6 +49,7 @@ class Network:
         for i in range(self.numLayers):
             outArray = self.layers[i].calcZ(outArray)
             calc_layers.append(outArray.copy())
+            outArray = [[self.activationFunction(x[0])] for x in outArray]
 
         return calc_layers
 
