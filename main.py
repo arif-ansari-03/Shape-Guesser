@@ -2,38 +2,53 @@ import pygame
 import neunet
 import numpy
 
-pygame.init()
+def startPygame(h, w, input_h, input_w):
+    pygame.init()
 
-h = 100
-w = 200
-grid = [[(255, 0, 0, 0) for x in range(w)] for y in range(h)]
+    startColor = (255, 255, 255, 0)
 
-screen = pygame.display.set_mode((500, 500))
-clock = pygame.time.Clock()
+    global screen, clock, grid, running
+    screen = pygame.display.set_mode((w, h))
+    clock = pygame.time.Clock()
+    grid = [[startColor for x in range(input_h)] for y in range(input_w)]
+    running = True
+    screen.fill("black")
 
+def updatePygame():
+    global screen, grid
+    screen.fill("black")
 
-running = True
+    h = len(grid)
+    w = 0
+    if h > 0:
+        w = len(grid[0])
 
-screen.fill("black")
+    if h == 0 or w == 0:
+        return -1
 
-while running:
+    boxSide = 7 #side of each pixel on the screen
+    boxDist = 0 #dist btw each pixel on the screen
+    s = boxDist+boxSide
     for i in range(h):
         for j in range(w):
-            pygame.draw.rect(screen, i * 255 + j * 255, pygame.Rect(i, j, i+5, j+5))
+            pygame.draw.rect(screen, grid[i][j], pygame.Rect(boxDist+i*s, boxDist+j*s, boxSide, boxSide))
+
+
+startPygame(500, 500, 38, 38)
+
+t = 0
+
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-        if pygame.mouse.get_pressed()[0]:
-            try:
-                pos = pygame.mouse.get_pos()
-                pygame.draw.circle(screen, "white", pos, 5)
-                
-            except:
-                pass
+    if t == 0:
+        updatePygame()
+        t = 1
 
     pygame.display.flip()
 
-    clock.tick(1)
+    clock.tick(1) #the argument is max fps
 
 pygame.quit()
