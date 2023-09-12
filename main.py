@@ -2,6 +2,8 @@ import pygame
 import neunet
 import numpy
 
+''' === functions defn === '''
+
 def startPygame(h, w, input_h, input_w):
     pygame.init()
 
@@ -32,6 +34,10 @@ def updatePygame():
     for i in range(h):
         for j in range(w):
             pygame.draw.rect(screen, grid[i][j], pygame.Rect(boxDist+i*s, boxDist+j*s, boxSide, boxSide))
+
+''' ================ '''
+
+
 
 
 startPygame(500, 500, 38, 38)

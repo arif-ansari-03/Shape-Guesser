@@ -49,7 +49,7 @@ class Network:
         for i in range(self.numLayers):
             outArray = self.layers[i].calcZ(outArray)
             calc_layers.append(outArray.copy())
-            outArray = [[self.activationFunction(x[0])] for x in outArray]
+            outArray = [self.activationFunction(x) for x in outArray]
 
         return calc_layers
 

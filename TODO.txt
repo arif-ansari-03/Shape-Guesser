@@ -1,1 +1,3 @@
 1. give credit to dataset author
+https://www.kaggle.com/datasets/frobert/handdrawn-shapes-hds-dataset
+https://github.com/frobertpixto/hand-drawn-shapes-dataset/blob/main/Datasheet_for_Datasets.HDS.pdf
