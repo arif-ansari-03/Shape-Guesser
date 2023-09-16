@@ -127,13 +127,13 @@ class ImageReader:
         plt.imshow(self.imageGrid)
         plt.show()
 
-I = ImageReader()
-I.update("ellipse.u01.0001.png")
+# I = ImageReader()
+# I.update("ellipse.u01.0001.png")
 
-N = neunet.Network()
-N.readWeights("out.txt")
-print(I.imageGrid)
-print(N.calc_out(I.imageGrid.flatten()))
+# N = neunet.Network()
+# N.readWeights("out.txt")
+# print(I.imageGrid)
+# print(N.calc_out(I.imageGrid.flatten()))
 
 
 

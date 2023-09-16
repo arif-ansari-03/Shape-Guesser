@@ -1,6 +1,7 @@
 import pygame
 import neunet
 import numpy
+import trainer
 
 ''' === functions defn === '''
 
@@ -106,7 +107,16 @@ while running:
 N = neunet.Network()
 N.readWeights("out.txt")
 
-grid = [[list(x) for x in y] for y in grid]
+I = trainer.ImageReader()
+I.imageGrid = grid
+
+grid = [[[int(255-z) for z in x] for x in y] for y in grid]
+for i in range(70):
+    for j in range(70):
+            I.imageGrid[i][j] = grid[j][i]
+            
+grid = I.imageGrid
+I.display()
 print(N.calc_out(numpy.array(grid).flatten()))
 
 pygame.quit()
