@@ -1,4 +1,1 @@
-
-        #     # print(outLayer)
-        #     # print(i)
-        #     # outLayer[i] += self.biases[i]
+len(layer.weights), len(layer.weights[0])

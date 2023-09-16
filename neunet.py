@@ -8,11 +8,11 @@ class Layer:
         self.weights = Weights
         self.biases = Biases
 
-    def __init__(self, arr):
-        self.numNodes = arr[0]               
-        self.numInNodes = arr[1]           
-        self.weights = arr[2] 
-        self.biases = arr[3] 
+    # def __init__(self, arr):
+    #     self.numNodes = arr[0]               
+    #     self.numInNodes = arr[1]           
+    #     self.weights = arr[2] 
+    #     self.biases = arr[3] 
 
     def calc_out( self, inLayer ):
         outLayer = numpy.matmul(self.weights, inLayer)
@@ -32,7 +32,7 @@ class Layer:
     
 class Network:
 
-    def __init__(self, NumLayers, Layers):
+    def __init__(self, NumLayers = 0, Layers = []):
         self.numLayers = NumLayers #does not include input layer
         self.layers = Layers #does not include input layer
 
@@ -59,6 +59,69 @@ class Network:
             outArray = self.layers[i].calc_out( outArray )
 
         return outArray             # The final output of the neural network
+
+    
+    def readWeights(self, address):
+        
+        with open(address, 'r') as file:
+            reader = file.read()
+
+        reader = str(reader)
+        reader = reader.replace('\n', ' ')
+        reader = reader.split()
+        print(len(reader))
+
+        i = 0
+        reader = [float(x) for x in reader if x != '\n' and x != ' ']
+        N = int(reader[i])
+        layers = []
+        i += 1
+
+        for k in range(1, N+1):
+            m = int(reader[i])
+            i+=1
+            n = int(reader[i])
+            i+=1
+
+            weights = numpy.zeros((m, n), dtype = 'f')
+            biases = numpy.zeros((m,), dtype = 'f')
+
+            for r in range(m):
+                for c in range(n):
+                    weights[r][c] = float(reader[i])
+                    i+=1
+
+            for r in range(m):
+                biases[r] = float(reader[i])
+                i+=1
+
+            layers.append(Layer(m, n, weights, biases))
+
+        self.layers = layers
+        self.numLayers = N
+
+    def writeWeights(self, address):
+        file = open(address, 'w')
+
+        file.write(str(self.numLayers)+'\n')
+
+        for layer in self.layers:
+            file.write((str(len(layer.weights)) + " " + str(len(layer.weights[0])) + '\n'))
+            t = ""
+            for row in layer.weights:
+                for x in row:
+                    t += str(x) + " "
+                file.write(t)
+                file.write('\n')
+                t = ""
+            
+            for i in layer.biases:
+                file.write(str(i)+'\n')
+
+        file.close()
+
+
+
     
 
 
