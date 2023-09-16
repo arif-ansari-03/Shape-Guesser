@@ -69,7 +69,6 @@ class Network:
         reader = str(reader)
         reader = reader.replace('\n', ' ')
         reader = reader.split()
-        print(len(reader))
 
         i = 0
         reader = [float(x) for x in reader if x != '\n' and x != ' ']

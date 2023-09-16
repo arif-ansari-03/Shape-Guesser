@@ -132,10 +132,7 @@ I.update("ellipse.u01.0001.png")
 
 N = neunet.Network()
 N.readWeights("out.txt")
-print(len(I.imageGrid))
-print(len(I.imageGrid[0]))
-print(len(I.imageGrid[0][0]))
-print(len(I.imageGrid.flatten()))
+print(I.imageGrid)
 print(N.calc_out(I.imageGrid.flatten()))
 
 

@@ -1,1 +1,1 @@
-len(layer.weights), len(layer.weights[0])
+x-5, y
