@@ -1,65 +1,73 @@
 # a program to generate random weights
 '''
 0
-70 x 70 = 19600
+70 x 70 = 19600 k1
 
 1
-200
+20 k2
 
 2
-200
+20 k3
 
 3
-2
+4 k4
 '''
+
+# add negative weights and biases as well 
+
+k1 = 19600
+k2 = 2
+k3 = 2
+k4 = 4
 
 import numpy
 
-mult = 0.001
+mult = 0.00001
+mult2 = 1
 
 address = "out.txt"
 file = open(address, 'w')
 
 file.write("3\n")
-file.write("200 19600\n")
+file.write(str(k2)+" "+str(k1)+"\n")
 
-weights = numpy.random.rand(200, 19600) * mult
-biases = numpy.random.rand(200) * mult
+weights = numpy.random.rand(k2, k1) * mult
+biases = numpy.random.rand(k2) * 0.000005
 
-for i in range(200):
-    for j in range(19600):
+for i in range(k2):
+    for j in range(k1):
         file.write(str(weights[i][j])+" ")
     file.write('\n')
 
-for i in range(200):
+for i in range(k2):
     file.write(str(biases[i])+" ")
     file.write('\n')
 
-weights = numpy.random.rand(200, 200) * mult
-biases = numpy.random.rand(200) * mult
+weights = numpy.random.rand(k3, k2) * mult2
+biases = numpy.random.rand(k3) * mult2
 
-file.write("200 200\n")
+file.write(str(k3)+" "+str(k2)+"\n")
 
-for i in range(200):
-    for j in range(200):
+for i in range(k3):
+    for j in range(k2):
         file.write(str(weights[i][j])+" ")
     file.write('\n')
 
-for i in range(200):
+for i in range(k3):
     file.write(str(biases[i]))
     file.write('\n')
 
-weights = numpy.random.rand(4, 200) * mult
-biases = numpy.random.rand(4) * mult
+weights = numpy.random.rand(k4, k3) * mult2
+biases = numpy.random.rand(k4) * mult2
 
-file.write("4 200\n")
+file.write(str(k4)+" "+str(k3)+"\n")
 
-for i in range(4):
-    for j in range(200):
+for i in range(k4):
+    for j in range(k3):
         file.write(str(weights[i][j])+" ")
     file.write('\n')
 
-for i in range(4):
+for i in range(k4):
     file.write(str(biases[i]))
     file.write('\n')
 

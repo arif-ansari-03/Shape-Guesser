@@ -1,1 +1,1 @@
-x-5, y
+calcA = [[N.activationFunction(x) for x in y] for y in calcZ]

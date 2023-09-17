@@ -7,10 +7,13 @@ import trainer
 
 def startPygame(h, w, input_h, input_w):
     pygame.init()
+    pygame.font.init()
 
     startColor = (0, 0, 0, 0)
 
-    global screen, clock, grid, running
+    global screen, clock, grid, running, N
+    N = neunet.Network()
+    N.readWeights("out.txt")
     screen = pygame.display.set_mode((w, h))
     clock = pygame.time.Clock()
     grid = [[startColor for x in range(input_h)] for y in range(input_w)]
@@ -19,7 +22,7 @@ def startPygame(h, w, input_h, input_w):
 
 def updatePygame():
     global screen, grid
-    screen.fill("black")
+    # screen.fill("black")
 
     h = len(grid)
     w = 0
@@ -77,6 +80,33 @@ def updateGrid(pos):
     for i in range(-2, 3):
         for j in range(-2, 3):
             updatePixel((x+i, y+j), applyBlur((x+i, y+j)))
+
+def writeText(text, pos):
+    global screen
+    font = pygame.font.SysFont('Comic Sans MS', 15)
+    txtSurface = font.render(text, True, (255, 255, 255, 0))
+    screen.blit(txtSurface,(pos[0] - txtSurface.get_width() // 2, pos[1] - txtSurface.get_height() // 2))
+
+def calcOutput():
+    global grid
+    newGrid = [[[int(255-z) for z in x] for x in y] for y in grid]
+
+    for i in range(70):
+        for j in range(70):
+            if i < j:
+                newGrid[i][j], newGrid[j][i] = newGrid[j][i], newGrid[i][j]
+
+    op = N.calc_out(numpy.array(newGrid).flatten())
+    i = 200
+    pygame.draw.rect(screen, (0, 0, 0, 0), pygame.Rect(400, 195, 595, 420))
+    for txt in op:
+        writeText(str(txt), (500, i))
+        i+=50
+
+    # I = trainer.ImageReader()
+    # I.imageGrid = newGrid
+    # I.display()
+
     
 
 ''' ================ '''
@@ -97,26 +127,36 @@ while running:
             x, y = pygame.mouse.get_pos()
             updateGrid((x, y))
             updateGrid((x-5, y))
+            # writeText("Hello", (400, 200))
+            calcOutput()
 
     updatePygame()
     pygame.display.flip()
 
-    clock.tick(1000) #the argument is max fps
+    clock.tick(4000) #the argument is max fps
 
     
 N = neunet.Network()
 N.readWeights("out.txt")
 
 I = trainer.ImageReader()
-I.imageGrid = grid
 
-grid = [[[int(255-z) for z in x] for x in y] for y in grid]
 for i in range(70):
     for j in range(70):
-            I.imageGrid[i][j] = grid[j][i]
-            
-grid = I.imageGrid
-I.display()
+        if i < j:
+            grid[i][j], grid[j][i] = grid[j][i], grid[i][j]
+
+# grid = [[[int(255-z) for z in x] for x in y] for y in grid]
+# I.imageGrid = grid
+
+# I.display()
 print(N.calc_out(numpy.array(grid).flatten()))
+calcZ = N.calcLayers(numpy.array(grid).flatten())
+calcA = [[N.activationFunction(x) for x in y] for y in calcZ]
+
+print(calcZ)
+print()
+print(calcA)
+
 
 pygame.quit()

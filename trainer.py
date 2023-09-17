@@ -130,11 +130,21 @@ class ImageReader:
 # I = ImageReader()
 # I.update("ellipse.u01.0001.png")
 
-# N = neunet.Network()
-# N.readWeights("out.txt")
+
 # print(I.imageGrid)
 # print(N.calc_out(I.imageGrid.flatten()))
 
+# N = neunet.Network()
+# N.readWeights("out.txt")
+
+# print(N.calc_out([2, 1]))
+
+# calcZ = N.calcLayers([1, 3]) # z values, sigmoid of z values is given to the next layer as input
+# calcA = [[N.activationFunction(x) for x in y] for y in calcZ] # a values, a = activationFunction(z)
+        
+# print(calcZ)
+# print()
+# print(calcA)
 
 
 
