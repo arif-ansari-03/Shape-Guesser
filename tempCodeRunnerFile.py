@@ -1,1 +1,1 @@
-calcA = [[N.activationFunction(x) for x in y] for y in calcZ]
+len(layer.biases), len(layer.biases[0])

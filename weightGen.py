@@ -16,8 +16,8 @@
 # add negative weights and biases as well 
 
 k1 = 19600
-k2 = 2
-k3 = 2
+k2 = 10
+k3 = 10
 k4 = 4
 
 import numpy

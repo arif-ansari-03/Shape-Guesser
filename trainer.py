@@ -2,6 +2,7 @@ import neunet
 import numpy
 import matplotlib.pyplot as plt
 import pylab
+import os
 from PIL import Image
 
 class Trainer:
@@ -19,7 +20,7 @@ class Trainer:
         a = 1 / (1 + numpy.exp(-z))
         return a * (1 - a)
     
-    def updateGrad(self, input, calcA, nodeVals, GW, GB):
+    def updateGrad(self, input, calcA, nodeVals):
         weightGrad = []
         biasGrad = []
 
@@ -37,14 +38,11 @@ class Trainer:
             weightGrad.append(temp)
         biasGrad = nodeVals
 
-        for i in range(len(GW)):
-            GW[i] = numpy.add(GW[i], weightGrad[i])
+        for i in range(len(self.GW)):
+            self.GW[i] = numpy.add(self.GW[i], weightGrad[i])
 
-        for i in range(len(GB)):
-            GB[i] = numpy.add(GB[i], weightGrad[i])
-
-        print(biasGrad)     
-        print(weightGrad)   
+        for i in range(len(self.GB)):
+            self.GB[i] = numpy.add(self.GB[i], biasGrad[i])  
 
 
     def calcNodeVals(self, calcA, calcZ, expectedOutput): #calculates the reptitive factor in gradient
@@ -88,21 +86,20 @@ class Trainer:
         self.Img = ImageReader()    # a lot of sampleGrad() is not fully implemented yet
 
         n = self.network.numLayers 
-        GW = []
-        GB = []
-        for layer in self.network.Layers:
-            GW.append(zeros(len(layer.weights), len(layer.weights[0])))
-            GB.append(zeros(len(layer.biases), len(layer.biases[0])))
+        self.GW = []
+        self.GB = []
+        for l in self.network.layers:
+            self.GW.append(numpy.zeros((len(l.weights), len(l.weights[0]))))
+            self.GB.append(numpy.zeros((len(l.biases),)))
 
-        # for loop goes through images, calculates gradients and adds them onto gw and gb
-        address = []
-        for i in range(10):
-            self.Img.update(address[i])
-            grad(self.Img.imageArray, output[i], GW, GB)
+        self.Img.update("ellipse.u01.0001.png")
+        self.grad(self.Img.imageArray, [0, 1, 0, 0])
 
-        for i in range(len(self.network.Layers)):
-            Layers[i].weights = numpy.add(Layers[i].weights, GW[i])
-            Layers[i].biases = numpy.add(Layers[i].biases, GB[i])
+        for i in range(len(self.GW)):
+            N.layers[i].weights = numpy.add(N.layers[i].weights, self.GW[i] * (-0.1))
+
+        for i in range(len(self.GB)):
+            N.layers[i].biases = numpy.add(N.layers[i].biases, self.GB[i] * (-0.1)) 
 
     '''  === Output resulting weights === '''
 
@@ -127,26 +124,26 @@ class ImageReader:
         plt.imshow(self.imageGrid)
         plt.show()
 
-# I = ImageReader()
-# I.update("ellipse.u01.0001.png")
 
+I = ImageReader()
+I.update("ellipse.u01.0001.png")
 
-# print(I.imageGrid)
-# print(N.calc_out(I.imageGrid.flatten()))
+N = neunet.Network()
+N.readWeights("out.txt")
 
-# N = neunet.Network()
-# N.readWeights("out.txt")
+print(N.calc_out(I.imageArray))
+T = Trainer(N)
 
-# print(N.calc_out([2, 1]))
+for i in range(1000):
+    T.sampleGrad()
+    if i % 100 == 0:
+        print(N.calc_out(I.imageArray))
 
-# calcZ = N.calcLayers([1, 3]) # z values, sigmoid of z values is given to the next layer as input
-# calcA = [[N.activationFunction(x) for x in y] for y in calcZ] # a values, a = activationFunction(z)
-        
-# print(calcZ)
-# print()
-# print(calcA)
+N.writeWeights("out2.txt")
 
-
-
-    
+# print(os.listdir())
+# print(os.getcwd())
+# os.chdir("dataset\\data")
+# print(os.getcwd())
+# print(os.listdir())
         
